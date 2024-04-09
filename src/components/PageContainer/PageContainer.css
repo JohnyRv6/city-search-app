@@ -1,8 +1,11 @@
+#page-title{
+    text-align: center;
+    padding: 1rem;
+    margin: 3rem 0;
+}
 main{
-    width: 100vw;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-flow: column wrap;
+    display: grid;
+    align-content: center;
+    gap: 3rem;
+    grid-template-columns: 1fr 1fr;
 }

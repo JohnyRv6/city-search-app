@@ -1,45 +1,34 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 // @ts-nocheck
-import { useCallback, useEffect, useState } from "react";
+import { useState } from "react";
 import TextField from "@mui/material/TextField";
-import Autocomplete, { createFilterOptions }  from "@mui/material/Autocomplete";
+import Autocomplete, { createFilterOptions } from "@mui/material/Autocomplete";
 import useCities from "../../Hooks/useCities";
 import useSearchNearCities from "../../Hooks/useSearchNearCities";
 import { isCity } from "../../Interfaces/cityInterface";
 import "./CitySearchAutocomplete.css";
 import NearCity from "../NearCity/NearCity";
-import { useAppDispatch } from "../../Store/store";
+import { useAppDispatch, useAppSelector } from "../../Store/store";
 import { selectCity } from "../../Store/features/selectedCitySlice";
 
 export default function CitySearchAutocomplete() {
-  const [value, setValue] = useState<isCity | null>(null);
-  const [inputValue, setInputValue] = useState("1");
+  const [inputValue, setInputValue] = useState("");
 
+  const selectedCity = useAppSelector((state) => state.selectedCity.city);
   const dispatch = useAppDispatch();
   const { cities } = useCities();
   const { nearCities } = useSearchNearCities();
 
   const filterOptions = createFilterOptions({
-    matchFrom: 'any',
+    matchFrom: "any",
     limit: 500,
   });
-
-  const setSelectedCity = useCallback(
-    () => {
-        dispatch(selectCity(value));
-    },
-    [dispatch, value],
-  )
-
-  useEffect(() => {
-    setSelectedCity();
-  }, [value, setSelectedCity]);
 
   return (
     <div id="auto-complete-wrapper">
       <Autocomplete
-        value={value}
-        onChange={(_, newValue: isCity | null) => setValue(newValue)}
+        value={selectedCity}
+        onChange={(_, newValue: isCity | null) => dispatch(selectCity(newValue))}
         filterOptions={filterOptions}
         inputValue={inputValue}
         onInputChange={(_, newInputValue) => {
@@ -47,25 +36,24 @@ export default function CitySearchAutocomplete() {
         }}
         options={cities}
         getOptionLabel={(option) => option.name}
-        sx={{ width: 300 }}
+        sx={{ width: "50%" }}
         renderOption={(props, option) => (
           <li {...props} key={`${option.name}${option.lat}`}>
             {option.name}
           </li>
         )}
-        renderInput={(params) => (
-          <TextField
-            {...params}
-            label="Find a city"
-          />
-        )}
+        renderInput={(params) => <TextField {...params} label="Find a city" />}
       />
-      <div>
-        {nearCities && <h3>Nearby cities</h3>}
-        {nearCities?.map((city) => (
-          <NearCity key={`${city?.lat}${city?.name}`} city={city} />
-        ))}
-      </div>
+      {nearCities && (
+        <div id='nearby-cities-container'>
+          <h3>Nearby cities</h3>
+          <ul>
+            {nearCities?.map((city) => (
+              <NearCity key={`${city?.lat}${city?.name}`} city={city} />
+            ))}
+          </ul>
+        </div>
+      )}
     </div>
   );
 }

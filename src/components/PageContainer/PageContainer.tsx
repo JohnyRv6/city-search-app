@@ -4,9 +4,12 @@ import "./PageContainer.css";
 
 export default function PageContainer() {
   return (
-    <main>
-      <CitySearchContainer />
-      <GoogleMapsContainer /> 
-    </main>
+    <>
+      <h1 id="page-title">Find a city app</h1>
+      <main>
+        <CitySearchContainer />
+        <GoogleMapsContainer />
+      </main>
+    </>
   );
 }

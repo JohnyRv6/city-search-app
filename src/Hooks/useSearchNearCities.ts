@@ -5,10 +5,11 @@ import { getKmDistance } from "../Helpers/getDistanceBetweenMarkers";
 import { useAppSelector } from "../Store/store";
 
 export default function useSearchNearCities() {
-  // const [selectedCity, setSelectedCity] = useState<isCity | null>();
-  const [nearCities, setNearCities] = useState<Array<isCity | null> | null>(null);
+  const [nearCities, setNearCities] = useState<Array<isCity | null> | null>(
+    null
+  );
 
-  const selectedCity = useAppSelector(state => state.selectedCity.city);
+  const selectedCity = useAppSelector((state) => state.selectedCity.city);
 
   const { cities } = useCities();
 
@@ -29,7 +30,13 @@ export default function useSearchNearCities() {
         })
         .sort((a, b) => a.distance - b.distance)
         .filter(({ distance }) => distance !== 0)
-        .slice(0, 3);
+        .slice(0, 3)
+        .map((city) => {
+          const { name, country, lat, lng } = city;
+          return {
+            name, country, lat, lng
+          }
+        });
 
       setNearCities(nearCities);
     },

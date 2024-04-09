@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import {
   APIProvider,
   Map,
-  //   InfoWindow,
   Marker,
 } from "@vis.gl/react-google-maps";
 import "./GoogleMapsContainer.css";
@@ -14,12 +13,11 @@ import { LatLng } from "../../Interfaces/latLngInterface";
 
 const googleMapsAPIKey = import.meta.env.VITE_MAPS_API_KEY;
 
-
 export default function GoogleMapsContainer() {
   const [position, setPosition] = useState<LatLng | null>();
   const selectedCity = useAppSelector((state) => state.selectedCity.city);
 
-  const {currentPosition} = useCurrentPosition();
+  const { currentPosition } = useCurrentPosition();
 
   useEffect(() => {
     if (selectedCity) {
@@ -29,6 +27,11 @@ export default function GoogleMapsContainer() {
       setPosition(currentPosition);
     }
   }, [selectedCity, currentPosition]);
+
+  useEffect(() => {
+    setPosition(currentPosition);
+  }, [currentPosition]);
+  
 
   return (
     <APIProvider apiKey={googleMapsAPIKey}>
