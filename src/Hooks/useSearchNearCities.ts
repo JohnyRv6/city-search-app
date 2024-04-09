@@ -2,10 +2,13 @@ import { useCallback, useEffect, useState } from "react";
 import { isCity } from "../Interfaces/cityInterface";
 import useCities from "./useCities";
 import { getKmDistance } from "../Helpers/getDistanceBetweenMarkers";
+import { useAppSelector } from "../Store/store";
 
 export default function useSearchNearCities() {
-  const [selectedCity, setSelectedCity] = useState<isCity | null>();
+  // const [selectedCity, setSelectedCity] = useState<isCity | null>();
   const [nearCities, setNearCities] = useState<Array<isCity | null> | null>(null);
+
+  const selectedCity = useAppSelector(state => state.selectedCity.city);
 
   const { cities } = useCities();
 
@@ -44,6 +47,5 @@ export default function useSearchNearCities() {
   return {
     nearCities,
     setNearCities,
-    setSelectedCity,
   };
 }

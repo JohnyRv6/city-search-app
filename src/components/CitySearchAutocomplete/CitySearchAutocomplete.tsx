@@ -1,31 +1,46 @@
-import { useEffect, useState } from "react";
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+// @ts-nocheck
+import { useCallback, useEffect, useState } from "react";
 import TextField from "@mui/material/TextField";
-import Autocomplete from "@mui/material/Autocomplete";
+import Autocomplete, { createFilterOptions }  from "@mui/material/Autocomplete";
 import useCities from "../../Hooks/useCities";
 import useSearchNearCities from "../../Hooks/useSearchNearCities";
 import { isCity } from "../../Interfaces/cityInterface";
 import "./CitySearchAutocomplete.css";
 import NearCity from "../NearCity/NearCity";
+import { useAppDispatch } from "../../Store/store";
+import { selectCity } from "../../Store/features/selectedCitySlice";
 
 export default function CitySearchAutocomplete() {
   const [value, setValue] = useState<isCity | null>(null);
   const [inputValue, setInputValue] = useState("1");
 
+  const dispatch = useAppDispatch();
   const { cities } = useCities();
-  const { nearCities, setSelectedCity } = useSearchNearCities();
+  const { nearCities } = useSearchNearCities();
+
+  const filterOptions = createFilterOptions({
+    matchFrom: 'any',
+    limit: 500,
+  });
+
+  const setSelectedCity = useCallback(
+    () => {
+        dispatch(selectCity(value));
+    },
+    [dispatch, value],
+  )
 
   useEffect(() => {
-    console.log(value);
-    setSelectedCity(value);
+    setSelectedCity();
   }, [value, setSelectedCity]);
 
   return (
     <div id="auto-complete-wrapper">
       <Autocomplete
         value={value}
-        onChange={(_, newValue: isCity | null) => {
-          setValue(newValue);
-        }}
+        onChange={(_, newValue: isCity | null) => setValue(newValue)}
+        filterOptions={filterOptions}
         inputValue={inputValue}
         onInputChange={(_, newInputValue) => {
           setInputValue(newInputValue);
@@ -41,7 +56,6 @@ export default function CitySearchAutocomplete() {
         renderInput={(params) => (
           <TextField
             {...params}
-            key={`${params.inputProps.value}${params.inputProps.id}`}
             label="Find a city"
           />
         )}
