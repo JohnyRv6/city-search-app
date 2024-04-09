@@ -25,8 +25,10 @@ export default function CitySearchAutocomplete() {
   });
 
   return (
-    <div id="auto-complete-wrapper">
+    <div role="container" id="auto-complete-wrapper">
       <Autocomplete
+        role="autocomplete"
+        aria-label="Input where you can select a city of the list"
         value={selectedCity}
         onChange={(_, newValue: isCity | null) => dispatch(selectCity(newValue))}
         filterOptions={filterOptions}
@@ -46,8 +48,8 @@ export default function CitySearchAutocomplete() {
       />
       {nearCities && (
         <div id='nearby-cities-container'>
-          <h3>Nearby cities</h3>
-          <ul>
+          <h3 role="subtitle">Nearby cities</h3>
+          <ul role="list" aria-label="Items list of the three nearest cities from you selection">
             {nearCities?.map((city) => (
               <NearCity key={`${city?.lat}${city?.name}`} city={city} />
             ))}

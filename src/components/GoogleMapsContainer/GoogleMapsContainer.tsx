@@ -35,7 +35,7 @@ export default function GoogleMapsContainer() {
 
   return (
     <APIProvider apiKey={googleMapsAPIKey}>
-      <section role="map wrapper" id="map-container">
+      <section role="map wrapper" aria-label="Map Section with location and marker from google maps" id="map-container">
         {position && (
           <Map zoom={10} center={position}>
             <Marker position={position} />

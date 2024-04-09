@@ -11,7 +11,7 @@ export default function NearCity(props: { city: isCity }) {
   };
 
   return (
-    <li className="nearby-city-element" onClick={() => setSelectedCity()}>
+    <li role="list" aria-label="Element of a list to can select a nearby city" className="nearby-city-element" onClick={() => setSelectedCity()}>
       {props?.city?.name}
     </li>
   );

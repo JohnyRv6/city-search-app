@@ -3,7 +3,7 @@ import "./CitySearchContainer.css";
 
 export default function CitySearchContainer() {
   return (
-    <section id="city-search-container">
+    <section role="section" aria-label="container of city search input" id="city-search-container">
       <CitySearchAutocomplete />
     </section>
   );
