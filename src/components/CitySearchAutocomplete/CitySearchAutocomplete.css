@@ -1,0 +1,7 @@
+#auto-complete-wrapper{
+    width: 50%;
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: center;
+    gap: 1rem;
+}
